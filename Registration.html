@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Model Registration</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; }
+    .container {
+      max-width: 500px; margin: 40px auto; padding: 20px;
+      background: #fff; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    }
+    h2 { text-align: center; margin-bottom: 20px; }
+    .field { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: bold; }
+    input {
+      width: 100%; padding: 10px; border: 1px solid #ccc;
+      border-radius: 6px; font-size: 1rem;
+    }
+    button {
+      width: 100%; padding: 12px; background: #4285f4; color: white;
+      border: none; border-radius: 6px; font-size: 1rem; cursor: pointer;
+    }
+    button:hover { background: #3367d6; }
+    #msg { margin-top: 15px; font-weight: bold; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Live Model Registration</h2>
+    <form id="regForm">
+      <div class="field">
+        <label for="name">Full Name</label>
+        <input id="name" name="name" type="text" required>
+      </div>
+      <div class="field">
+        <label for="roll">Roll Number</label>
+        <input id="roll" name="roll" type="text" required>
+      </div>
+      <div class="field">
+        <label for="email">Email ID</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    <div id="msg"></div>
+  </div>
+
+  <script>
+    // ✅ Replace this with your actual Web App URL
+    const scriptURL = "https://script.google.com/macros/s/AKfycbxJyH9o_KM_kolMIyiWlt90yvd4x-GQ5prYaVjURheelau6XLKbXWyBt1t_34GpzHdMaw/exec";
+
+    const form = document.getElementById("regForm");
+    const msg = document.getElementById("msg");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const data = {
+        name: form.name.value,
+        roll: form.roll.value,
+        email: form.email.value
+      };
+
+      fetch(scriptURL, {
+        method: "POST",
+        mode: "no-cors",   // important to avoid CORS errors
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(() => {
+        msg.style.color = "green";
+        msg.innerText = "✅ Registration Successful!";
+        form.reset();
+      })
+      .catch(err => {
+        msg.style.color = "red";
+        msg.innerText = "❌ Error: " + err;
+      });
+    });
+  </script>
+</body>
+</html> 
